@@ -2,16 +2,31 @@ package string_calculator_kata;
 
 public class StringCalculator {
 
+	private static final String EMTY_LINE = "";
+	private static final String SEPARATOR = ",";
+
 	public int add(String numbers) {
-		if("".equals(numbers))
+		if(isEmpty(numbers))
 			return 0;
-		if(! numbers.contains(","))
+		else if (hasOneValue(numbers))
 			return Integer.parseInt(numbers);
 		
-		String[] nums = numbers.split(",");
+		return computeLine(numbers);
+   }
+
+	private boolean isEmpty(String numbers) {
+		return EMTY_LINE.equals(numbers);
+	}
+
+	private boolean hasOneValue(String numbers) {
+		return ! numbers.contains(SEPARATOR);
+	}
+
+	private int computeLine(String numbers) {
+		String[] nums = numbers.split(SEPARATOR);
 		int first = Integer.parseInt(nums[0]);
 		int second = Integer.parseInt(nums[1]);
 		return first + second;
-   }
+	}
 
 }
