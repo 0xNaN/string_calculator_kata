@@ -45,17 +45,22 @@ public class StringCalculator {
 			return 0;
 		
 		int total = 0;
-		for(String number: getNumbersFrom(line, separator)) {
-			int num = Integer.parseInt(number);
-			if(num < 0)
-				throw new NegativeNotAllowed(String.valueOf(num));
-			total += num;
+		for(Integer number: getNumbersFrom(line, separator)) {
+			if(number < 0)
+				throw new NegativeNotAllowed(number.toString());
+			total += number;
 		}
 		return total;
 	}
 
-	private List<String> getNumbersFrom(String lineNumbers, String separator) {
-		return Arrays.asList(lineNumbers.split(separator));
+	private List<Integer> getNumbersFrom(String lineNumbers, String separator) {
+		List<String> stringNumbers = Arrays.asList(lineNumbers.split(separator));
+		
+		List<Integer> numbers = new LinkedList<Integer>();
+		for(String num: stringNumbers)
+			numbers.add(Integer.parseInt(num));
+		
+		return numbers;
 	}
 
 	private List<String> getLines(String data) {
