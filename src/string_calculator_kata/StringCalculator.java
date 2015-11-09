@@ -11,7 +11,7 @@ public class StringCalculator {
 	private static final String EMTY_LINE = "";
 	private static final String DEFAULT_SEPARATOR = ",";
 
-	public int add(String numbers) {
+	public int add(String numbers) throws NegativeNotAllowed {
 		List<String> lines = getLines(numbers);
 		String separator = getSeparator(lines.get(0));
 		
@@ -40,14 +40,17 @@ public class StringCalculator {
 		return line.substring(SEPARATOR_HEADER_PREFIX.length());
 	}
 
-	private int computeLine(String line, String separator) {
+	private int computeLine(String line, String separator) throws NegativeNotAllowed {
 		if(isEmpty(line))
 			return 0;
 		
 		int total = 0;
-		for(String number: getNumbersFrom(line, separator)) 
-			total += Integer.parseInt(number);
-		
+		for(String number: getNumbersFrom(line, separator)) {
+			int num = Integer.parseInt(number);
+			if(num < 0)
+				throw new NegativeNotAllowed(String.valueOf(num));
+			total += num;
+		}
 		return total;
 	}
 

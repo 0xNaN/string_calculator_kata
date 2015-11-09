@@ -14,20 +14,20 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class StringCalculatorParameterizedTest {
 	StringCalculator sc;
-	
+
 	String numbers;
 	int sum;
-	
+
 	public StringCalculatorParameterizedTest(String numbers, Integer sum) {
 		this.numbers = numbers;
 		this.sum = sum;
 	}
-	
+
 	@Before
 	public void setUp() {
 		sc = new StringCalculator();	
 	}
-	
+
 	@Parameters
 	public static Collection<Object[]> testCases() {
 		return Arrays.asList(new Object[][] {
@@ -46,18 +46,37 @@ public class StringCalculatorParameterizedTest {
 				{"//;\n1;2;3\n1\n4;5", 16},
 				{"//-\n1-2", 3},
 				{"//:\n1:1\n1\n10:10", 23}
-				});
+		});
 	}
-	
+
 	@Test
 	public void checkAll() {
-		assertEquals(sum, sc.add(numbers));
+		try {
+			assertEquals(sum, sc.add(numbers));
+		} catch (NegativeNotAllowed e) {
+			fail("should not throw NegativeNotAllowed Exception with: " + this.numbers);
+		}
 	}
-	
+
 	@Test
 	public void
 	should_return_zero_for_empty_string() {
-		assertEquals(0, sc.add(""));
+		try {
+			assertEquals(0, sc.add(""));
+		} catch (NegativeNotAllowed e) {
+			fail("should not throw NegativeNotAllowed Exception");
+		}
+	}
+
+	@Test
+	public void
+	should_raise_an_exception_for_a_negative_number() {
+		try {
+			sc.add("-1");
+			fail("Should raise an exception");
+		} catch (NegativeNotAllowed e) {
+			assertEquals("-1", e.getMessage());
+		}
 	}
 	
 }
