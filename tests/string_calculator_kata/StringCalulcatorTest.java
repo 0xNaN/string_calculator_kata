@@ -12,4 +12,11 @@ public class StringCalulcatorTest {
 		StringCalculator sc = new StringCalculator();
 		assertEquals(0, sc.add(""));
 	}
+	
+	@Test
+	public void
+	should_return_one_for_a_string_with_only_one() {
+		StringCalculator sc = new StringCalculator();
+		assertEquals(1, sc.add("1"));
+	}
 }
