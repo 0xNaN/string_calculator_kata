@@ -42,9 +42,6 @@ public class StringCalculator {
 	}
 
 	private int computeLine(String line, String separator) throws NegativeNotAllowed {
-		if(isEmpty(line))
-			return 0;
-
 		int total = 0;
 		for(Integer number: getNumbersFrom(line, separator)) {
 			if(number < 0)
@@ -55,11 +52,11 @@ public class StringCalculator {
 	}
 
 	private List<Integer> getNumbersFrom(String lineNumbers, String separator) {
+		List<Integer> numbers = new LinkedList<Integer>();	
 		List<String> stringNumbers = Arrays.asList(lineNumbers.split(separator));
 
-		List<Integer> numbers = new LinkedList<Integer>();
 		for(String num: stringNumbers)
-			numbers.add(Integer.parseInt(num));
+			numbers.add(stringToNumber(num));
 
 		return numbers;
 	}
@@ -70,5 +67,9 @@ public class StringCalculator {
 
 	private boolean isEmpty(String line) {
 		return EMTY_LINE.equals(line);
+	}
+	
+	private Integer stringToNumber(String num) {
+		return "".equals(num) ? 0 : Integer.parseInt(num);
 	}
 }
