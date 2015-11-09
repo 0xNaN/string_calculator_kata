@@ -6,6 +6,7 @@ import java.util.List;
 
 public class StringCalculator {
 
+	private static final String SEPARATOR_HEADER_PREFIX = "//";
 	private static final String NEW_LINE_SEQUENCE = "\n";
 	private static final String EMTY_LINE = "";
 	private static final String SEPARATOR = ",";
@@ -14,11 +15,7 @@ public class StringCalculator {
 		int total = 0;
 		List<String> lines = getLines(numbers);
 		
-		String separator = SEPARATOR;
-		if(isSeparatorHeader(lines.get(0))) {
-			separator = getSeparator(lines.get(0));
-			lines.remove(0);
-		}
+		String separator = getSeparator(lines);
 		
 		for(String line: lines) {
 				total += computeLine(line, separator);
@@ -26,14 +23,21 @@ public class StringCalculator {
 		return total;
    }
 
-	private boolean isSeparatorHeader(String line) {
-		return line.startsWith("//");
+	private String getSeparator(List<String> lines) {
+		String separator = SEPARATOR;
+		if(isSeparatorHeader(lines.get(0))) {
+			separator = parseSeparator(lines.get(0));
+			lines.remove(0);
+		}
+		return separator;
 	}
 
-	private String getSeparator(String line) {
-		if("//;".equals(line))
-			return ";";
-		return SEPARATOR;
+	private boolean isSeparatorHeader(String line) {
+		return line.startsWith(SEPARATOR_HEADER_PREFIX);
+	}
+
+	private String parseSeparator(String line) {
+		return line.substring(SEPARATOR_HEADER_PREFIX.length());
 	}
 
 	private int computeLine(String line, String separator) {
