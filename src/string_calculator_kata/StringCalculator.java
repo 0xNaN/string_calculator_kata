@@ -17,8 +17,9 @@ public class StringCalculator {
 
 		if(isSeparatorHeader(lines.get(0)))
 			lines.remove(0);
-		checkPositivness(lines, separator);
+
 		List<Integer> allNumbers = getNumbersFrom(lines, separator);
+		checkPositivness(allNumbers);
 		int total = 0;
 		for(Integer num: allNumbers)
 			total += num;
@@ -36,23 +37,14 @@ public class StringCalculator {
 	}
 
 
-	private void checkPositivness(List<String> lines, String separator) throws NegativeNotAllowed {
+	private void checkPositivness(List<Integer> numbers) throws NegativeNotAllowed {
 		List<Integer> negativeNumbers = new LinkedList<Integer>();
-		for(String line: lines) {
-			negativeNumbers.addAll(getNegativeNumbersFrom(line, separator));
+		for(Integer n: numbers) {
+			if(n < 0)
+				negativeNumbers.add(n);
 		}
 		if(negativeNumbers.size() > 0)
 			throw new NegativeNotAllowed(negativeNumbers.toString());
-	}
-
-
-	private List<Integer> getNegativeNumbersFrom(String line, String separator) {
-		List<Integer> negative = new LinkedList<Integer>();
-		List<Integer> numbers = getNumbersFrom(line, separator);
-		for(Integer n: numbers)
-			if(n < 0)
-				negative.add(n);
-		return negative;
 	}
 
 
