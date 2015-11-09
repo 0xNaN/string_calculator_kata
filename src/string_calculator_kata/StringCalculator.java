@@ -9,10 +9,14 @@ public class StringCalculator {
 	private static final String SEPARATOR = ",";
 
 	public int add(String numbers) {
-		if(isEmpty(numbers))
-			return 0;
-		
-		return computeLine(numbers);
+		int total = 0;
+		for(String line: numbers.split("\n")) {
+			if(isEmpty(line))
+				total += 0;
+			else
+				total += computeLine(line);
+		}
+		return total;
    }
 
 	private boolean isEmpty(String numbers) {
