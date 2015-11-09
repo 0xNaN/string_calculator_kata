@@ -11,16 +11,22 @@ public class StringCalculator {
 	private static final String SEPARATOR_PATTERN = SEPARATOR_PREFIX + ".*";
 	private static final String NEW_LINE_SEQUENCE = "\n";
 	private ILogger logger;
+	private IWebService webService;
 
-	public StringCalculator(ILogger logger) {
+	public StringCalculator(ILogger logger, IWebService webService) {
 		this.logger = logger;
+		this.webService = webService;
 	}
 
 	public int add(String numbers) throws NegativeNotAllowed {
 		Integer total = 0;
 		for(Integer num: positiveNumbersFrom(numbers))
 			total += num;
-		logger.write(total.toString());
+		try {
+			logger.write(total.toString());
+		} catch (Exception exception) {
+			webService.send(exception.getMessage());
+		}
 		return total;
 	}
 

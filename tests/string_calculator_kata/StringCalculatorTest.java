@@ -10,21 +10,22 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class StringCalculatorTest {
-	
+	final String exceptionMessage = "a message";
 	@Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 	
 	final ILogger logger = context.mock(ILogger.class);
+	final IWebService webService = context.mock(IWebService.class);
 	
 	StringCalculator calculator;
 
 	@Before
 	public void setUp() {
-		calculator = new StringCalculator(logger);	
+		calculator = new StringCalculator(logger, webService);	
 	}
 
 	@Test
 	public void
-	should_return_zero_for_empty_string() {
+	should_return_zero_for_empty_string() throws Exception {
 		context.checking(new Expectations() {{
 			oneOf(logger).write("0");
 		}});
@@ -60,7 +61,7 @@ public class StringCalculatorTest {
 	
 	@Test
 	public void
-	should_log_the_sum_on_the_logger() {
+	should_log_the_sum_on_the_logger() throws Exception {
 		context.checking(new Expectations() {{
 			oneOf(logger).write("1");
 		}});
@@ -72,4 +73,19 @@ public class StringCalculatorTest {
 		}
 	}
 	
+	@Test
+	public void
+	should_notify_web_service_if_logger_fails() throws Exception {		
+		context.checking(new Expectations() {{
+			allowing(logger).write(with(any(String.class)));
+				will(throwException(new Exception(exceptionMessage)));
+			oneOf(webService).send(exceptionMessage);
+		}});
+		
+		try {
+			calculator.add("1");
+		} catch (NegativeNotAllowed e) {
+			fail("should not throw NegativeNotAllowed Exception");
+		}
+	}
 }

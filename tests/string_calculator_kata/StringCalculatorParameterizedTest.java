@@ -22,6 +22,7 @@ public class StringCalculatorParameterizedTest {
 	@Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 	
 	final ILogger logger = context.mock(ILogger.class);
+	final IWebService webService = context.mock(IWebService.class);
 	
 	StringCalculator calculator;
 
@@ -35,7 +36,7 @@ public class StringCalculatorParameterizedTest {
 
 	@Before
 	public void setUp() {
-		calculator = new StringCalculator(logger);	
+		calculator = new StringCalculator(logger, webService);	
 	}
 
 	@Parameters
@@ -60,7 +61,7 @@ public class StringCalculatorParameterizedTest {
 	}
 
 	@Test
-	public void checkAll() {
+	public void checkAll() throws Exception {
 		context.checking(new Expectations() {{
 			oneOf(logger).write(valueOf(sum).toString());
 		}});
