@@ -10,11 +10,17 @@ public class StringCalculator {
 	private static final String DEFAULT_SEPARATOR = ",";
 	private static final String SEPARATOR_PATTERN = SEPARATOR_PREFIX + ".*";
 	private static final String NEW_LINE_SEQUENCE = "\n";
+	private ILogger logger;
+
+	public StringCalculator(ILogger logger) {
+		this.logger = logger;
+	}
 
 	public int add(String numbers) throws NegativeNotAllowed {
-		int total = 0;
+		Integer total = 0;
 		for(Integer num: positiveNumbersFrom(numbers))
 			total += num;
+		logger.write(total.toString());
 		return total;
 	}
 

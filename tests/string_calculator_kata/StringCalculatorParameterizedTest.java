@@ -1,11 +1,16 @@
 package string_calculator_kata;
 
-import static org.junit.Assert.*;
+import static java.lang.Integer.valueOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -13,7 +18,12 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class StringCalculatorParameterizedTest {
-	StringCalculator sc;
+	
+	@Rule public JUnitRuleMockery context = new JUnitRuleMockery();
+	
+	final ILogger logger = context.mock(ILogger.class);
+	
+	StringCalculator calculator;
 
 	String numbers;
 	int sum;
@@ -25,7 +35,7 @@ public class StringCalculatorParameterizedTest {
 
 	@Before
 	public void setUp() {
-		sc = new StringCalculator();	
+		calculator = new StringCalculator(logger);	
 	}
 
 	@Parameters
@@ -51,8 +61,12 @@ public class StringCalculatorParameterizedTest {
 
 	@Test
 	public void checkAll() {
+		context.checking(new Expectations() {{
+			oneOf(logger).write(valueOf(sum).toString());
+		}});
+		
 		try {
-			assertEquals(sum, sc.add(numbers));
+			assertEquals(sum, calculator.add(numbers));
 		} catch (NegativeNotAllowed e) {
 			fail("should not throw NegativeNotAllowed Exception with: " + this.numbers);
 		}
@@ -61,8 +75,12 @@ public class StringCalculatorParameterizedTest {
 	@Test
 	public void
 	should_return_zero_for_empty_string() {
+		context.checking(new Expectations() {{
+			oneOf(logger).write("0");
+		}});
+		
 		try {
-			assertEquals(0, sc.add(""));
+			assertEquals(0, calculator.add(""));
 		} catch (NegativeNotAllowed e) {
 			fail("should not throw NegativeNotAllowed Exception");
 		}
@@ -72,7 +90,7 @@ public class StringCalculatorParameterizedTest {
 	public void
 	should_raise_an_exception_for_a_negative_number() {
 		try {
-			sc.add("-1");
+			calculator.add("-1");
 			fail("Should raise an exception");
 		} catch (NegativeNotAllowed e) {
 			assertEquals("[-1]", e.getMessage());
@@ -83,10 +101,24 @@ public class StringCalculatorParameterizedTest {
 	public void
 	should_raise_an_exception_showing_all_negative_numbers() {
 		try {
-			sc.add("-1,-3\n0\n4,-2");
+			calculator.add("-1,-3\n0\n4,-2");
 			fail("Should raise an exception");
 		} catch (NegativeNotAllowed e) {
 			assertEquals("[-1, -3, -2]", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void
+	should_log_the_sum_on_the_logger() {
+		context.checking(new Expectations() {{
+			oneOf(logger).write("1");
+		}});
+		
+		try {
+			calculator.add("1");
+		} catch (NegativeNotAllowed e) {
+			fail("should not throw NegativeNotAllowed Exception");
 		}
 	}
 	
