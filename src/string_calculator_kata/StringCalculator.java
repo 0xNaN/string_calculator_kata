@@ -13,7 +13,10 @@ public class StringCalculator {
 
 	public int add(String numbers) {
 		List<String> lines = getLines(numbers);
-		String separator = getSeparator(lines);
+		String separator = getSeparator(lines.get(0));
+		
+		if(isSeparatorHeader(lines.get(0)))
+				lines.remove(0);
 		
 		int total = 0;
 		for(String line: lines)
@@ -21,11 +24,10 @@ public class StringCalculator {
 		return total;
    }
 
-	private String getSeparator(List<String> lines) {
+	private String getSeparator(String line) {
 		String separator = DEFAULT_SEPARATOR;
-		if(isSeparatorHeader(lines.get(0))) {
-			separator = parseSeparator(lines.get(0));
-			lines.remove(0);
+		if(isSeparatorHeader(line)) {
+			separator = parseSeparator(line);
 		}
 		return separator;
 	}
