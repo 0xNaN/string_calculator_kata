@@ -14,15 +14,16 @@ public class StringCalculator {
 	public int add(String numbers) throws NegativeNotAllowed {
 		List<String> lines = getLines(numbers);
 		String separator = getSeparator(lines.get(0));
-		
+
 		if(isSeparatorHeader(lines.get(0)))
-				lines.remove(0);
-		
+			lines.remove(0);
+
 		int total = 0;
 		for(String line: lines)
-				total += computeLine(line, separator);
+			total += computeLine(line, separator);
 		return total;
-   }
+	}
+
 
 	private String getSeparator(String line) {
 		String separator = DEFAULT_SEPARATOR;
@@ -43,7 +44,7 @@ public class StringCalculator {
 	private int computeLine(String line, String separator) throws NegativeNotAllowed {
 		if(isEmpty(line))
 			return 0;
-		
+
 		int total = 0;
 		for(Integer number: getNumbersFrom(line, separator)) {
 			if(number < 0)
@@ -55,11 +56,11 @@ public class StringCalculator {
 
 	private List<Integer> getNumbersFrom(String lineNumbers, String separator) {
 		List<String> stringNumbers = Arrays.asList(lineNumbers.split(separator));
-		
+
 		List<Integer> numbers = new LinkedList<Integer>();
 		for(String num: stringNumbers)
 			numbers.add(Integer.parseInt(num));
-		
+
 		return numbers;
 	}
 
