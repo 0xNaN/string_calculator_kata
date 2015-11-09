@@ -1,5 +1,8 @@
 package string_calculator_kata;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class StringCalculator {
 
 	private static final String EMTY_LINE = "";
@@ -23,10 +26,13 @@ public class StringCalculator {
 	}
 
 	private int computeLine(String numbers) {
-		String[] nums = numbers.split(SEPARATOR);
-		int first = Integer.parseInt(nums[0]);
-		int second = Integer.parseInt(nums[1]);
-		return first + second;
+		int total = 0;
+		
+		List<String> nums = Arrays.asList(numbers.split(SEPARATOR));
+		for(String number: nums) 
+			total += Integer.parseInt(number);
+	
+		return total;
 	}
 
 }

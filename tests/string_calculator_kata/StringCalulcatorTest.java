@@ -36,4 +36,10 @@ public class StringCalulcatorTest {
 	should_return_the_sum_two_numbers_in_the_line() {
 		assertEquals(2, sc.add("1,1"));
 	}
+	
+	@Test
+	public void
+	should_Return_the_sum_of_multiple_numbers() {
+		assertEquals(3, sc.add("1,1,1"));
+	}
 }
