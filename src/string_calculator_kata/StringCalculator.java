@@ -9,22 +9,20 @@ public class StringCalculator {
 	private static final String SEPARATOR_HEADER_PREFIX = "//";
 	private static final String NEW_LINE_SEQUENCE = "\n";
 	private static final String EMTY_LINE = "";
-	private static final String SEPARATOR = ",";
+	private static final String DEFAULT_SEPARATOR = ",";
 
 	public int add(String numbers) {
-		int total = 0;
 		List<String> lines = getLines(numbers);
-		
 		String separator = getSeparator(lines);
 		
-		for(String line: lines) {
+		int total = 0;
+		for(String line: lines)
 				total += computeLine(line, separator);
-		}
 		return total;
    }
 
 	private String getSeparator(List<String> lines) {
-		String separator = SEPARATOR;
+		String separator = DEFAULT_SEPARATOR;
 		if(isSeparatorHeader(lines.get(0))) {
 			separator = parseSeparator(lines.get(0));
 			lines.remove(0);
