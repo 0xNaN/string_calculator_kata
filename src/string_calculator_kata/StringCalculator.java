@@ -1,6 +1,7 @@
 package string_calculator_kata;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StringCalculator {
@@ -11,15 +12,27 @@ public class StringCalculator {
 
 	public int add(String numbers) {
 		int total = 0;
-		String[] lines = getLines(numbers);
-		String separator = getSeparator(lines[0]);
+		List<String> lines = getLines(numbers);
+		
+		String separator = SEPARATOR;
+		if(isSeparatorHeader(lines.get(0))) {
+			separator = getSeparator(lines.get(0));
+			lines.remove(0);
+		}
+		
 		for(String line: lines) {
 				total += computeLine(line, separator);
 		}
 		return total;
    }
 
-	private String getSeparator(String string) {
+	private boolean isSeparatorHeader(String line) {
+		return line.startsWith("//");
+	}
+
+	private String getSeparator(String line) {
+		if("//;".equals(line))
+			return ";";
 		return SEPARATOR;
 	}
 
@@ -38,8 +51,8 @@ public class StringCalculator {
 		return Arrays.asList(lineNumbers.split(separator));
 	}
 
-	private String[] getLines(String data) {
-		return data.split(NEW_LINE_SEQUENCE);
+	private List<String> getLines(String data) {
+		return new LinkedList(Arrays.asList(data.split(NEW_LINE_SEQUENCE)));
 	}
 
 	private boolean isEmpty(String line) {
