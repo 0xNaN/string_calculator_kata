@@ -30,4 +30,10 @@ public class StringCalulcatorTest {
 	should_return_ten_for_a_string_with_only_ten() {
 		assertEquals(10, sc.add("10"));
 	}
+	
+	@Test
+	public void
+	should_return_the_sum_two_numbers_in_the_line() {
+		assertEquals(2, sc.add("1,1"));
+	}
 }

@@ -5,7 +5,13 @@ public class StringCalculator {
 	public int add(String numbers) {
 		if("".equals(numbers))
 			return 0;
-		return Integer.parseInt(numbers);
-	}
+		if(! numbers.contains(","))
+			return Integer.parseInt(numbers);
+		
+		String[] nums = numbers.split(",");
+		int first = Integer.parseInt(nums[0]);
+		int second = Integer.parseInt(nums[1]);
+		return first + second;
+   }
 
 }
