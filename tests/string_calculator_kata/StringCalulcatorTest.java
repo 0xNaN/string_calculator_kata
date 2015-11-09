@@ -24,4 +24,10 @@ public class StringCalulcatorTest {
 	should_return_one_for_a_string_with_only_one() {
 		assertEquals(1, sc.add("1"));
 	}
+	
+	@Test
+	public void
+	should_return_ten_for_a_string_with_only_ten() {
+		assertEquals(10, sc.add("10"));
+	}
 }
