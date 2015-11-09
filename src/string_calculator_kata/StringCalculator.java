@@ -11,18 +11,12 @@ public class StringCalculator {
 	public int add(String numbers) {
 		if(isEmpty(numbers))
 			return 0;
-		else if (hasOneValue(numbers))
-			return Integer.parseInt(numbers);
 		
 		return computeLine(numbers);
    }
 
 	private boolean isEmpty(String numbers) {
 		return EMTY_LINE.equals(numbers);
-	}
-
-	private boolean hasOneValue(String numbers) {
-		return ! numbers.contains(SEPARATOR);
 	}
 
 	private int computeLine(String numbers) {
