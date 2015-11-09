@@ -41,5 +41,7 @@ public class StringCalulcatorTest {
 	public void
 	should_Return_the_sum_of_multiple_numbers() {
 		assertEquals(3, sc.add("1,1,1"));
+		assertEquals(15, sc.add("1,2,3,4,5"));
+		assertEquals(7, sc.add("1,1,1,1,1,1,1"));
 	}
 }
