@@ -75,7 +75,18 @@ public class StringCalculatorParameterizedTest {
 			sc.add("-1");
 			fail("Should raise an exception");
 		} catch (NegativeNotAllowed e) {
-			assertEquals("-1", e.getMessage());
+			assertEquals("[-1]", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void
+	should_raise_an_exception_showing_all_negative_numbers() {
+		try {
+			sc.add("-1,-3\n0\n4,-2");
+			fail("Should raise an exception");
+		} catch (NegativeNotAllowed e) {
+			assertEquals("[-1, -3, -2]", e.getMessage());
 		}
 	}
 	

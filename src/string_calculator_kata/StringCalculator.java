@@ -17,11 +17,31 @@ public class StringCalculator {
 
 		if(isSeparatorHeader(lines.get(0)))
 			lines.remove(0);
-
+		checkPositivness(lines, separator);
 		int total = 0;
 		for(String line: lines)
 			total += computeLine(line, separator);
 		return total;
+	}
+
+
+	private void checkPositivness(List<String> lines, String separator) throws NegativeNotAllowed {
+		List<Integer> negativeNumbers = new LinkedList<Integer>();
+		for(String line: lines) {
+			negativeNumbers.addAll(getNegativeNumbersFrom(line, separator));
+		}
+		if(negativeNumbers.size() > 0)
+			throw new NegativeNotAllowed(negativeNumbers.toString());
+	}
+
+
+	private List<Integer> getNegativeNumbersFrom(String line, String separator) {
+		List<Integer> negative = new LinkedList<Integer>();
+		List<Integer> numbers = getNumbersFrom(line, separator);
+		for(Integer n: numbers)
+			if(n < 0)
+				negative.add(n);
+		return negative;
 	}
 
 
