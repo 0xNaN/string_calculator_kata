@@ -11,25 +11,31 @@ public class StringCalculator {
 
 	public int add(String numbers) {
 		int total = 0;
-		for(String line: getLines(numbers)) {
-				total += computeLine(line);
+		String[] lines = getLines(numbers);
+		String separator = getSeparator(lines[0]);
+		for(String line: lines) {
+				total += computeLine(line, separator);
 		}
 		return total;
    }
 
-	private int computeLine(String line) {
+	private String getSeparator(String string) {
+		return SEPARATOR;
+	}
+
+	private int computeLine(String line, String separator) {
 		if(isEmpty(line))
 			return 0;
 		
 		int total = 0;
-		for(String number: getNumbersFrom(line)) 
+		for(String number: getNumbersFrom(line, separator)) 
 			total += Integer.parseInt(number);
 		
 		return total;
 	}
 
-	private List<String> getNumbersFrom(String lineNumbers) {
-		return Arrays.asList(lineNumbers.split(SEPARATOR));
+	private List<String> getNumbersFrom(String lineNumbers, String separator) {
+		return Arrays.asList(lineNumbers.split(separator));
 	}
 
 	private String[] getLines(String data) {

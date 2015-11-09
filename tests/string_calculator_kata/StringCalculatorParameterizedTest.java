@@ -42,6 +42,7 @@ public class StringCalculatorParameterizedTest {
 				{"1\n1", 2},
 				{"1\n2,3", 6},
 				{"1,2\n3,4,5", 15},
+//				{"//;\n1;2", 3}
 				});
 	}
 	
