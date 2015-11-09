@@ -12,20 +12,29 @@ public class StringCalculator {
 	private static final String DEFAULT_SEPARATOR = ",";
 
 	public int add(String numbers) throws NegativeNotAllowed {
-		List<String> lines = getLines(numbers);
-		String separator = getSeparator(lines.get(0));
-
-		if(isSeparatorHeader(lines.get(0)))
-			lines.remove(0);
-
-		List<Integer> allNumbers = getNumbersFrom(lines, separator);
-		checkPositivness(allNumbers);
 		int total = 0;
-		for(Integer num: allNumbers)
+		for(Integer num: getNumbersIfPositive(numbers))
 			total += num;
 		return total;
 	}
 
+
+	private List<Integer> getNumbersIfPositive(String numbers) throws NegativeNotAllowed {
+		List<Integer> allNumbers = getNumbersFrom(numbers);
+		checkPositivness(allNumbers);
+		return allNumbers;
+	}
+
+
+	private List<Integer> getNumbersFrom(String data) {
+		List<String> lines = getLines(data);
+		String separator = getSeparator(lines.get(0));
+
+		if(isSeparatorHeader(lines.get(0)))
+			lines.remove(0);
+	
+		return getNumbersFrom(lines, separator);
+	}
 
 	private List<Integer> getNumbersFrom(List<String> lines, String separator) {
 		List<Integer> numbers = new LinkedList<Integer>();
@@ -36,6 +45,20 @@ public class StringCalculator {
 		return numbers;
 	}
 
+	private List<Integer> getNumbersFrom(String line, String separator) {
+		List<Integer> numbers = new LinkedList<Integer>();	
+		List<String> stringNumbers = splitNumbers(line, separator);
+		
+		for(String num: stringNumbers)
+			numbers.add(stringToNumber(num));
+		
+		return numbers;
+	}
+
+
+	private List<String> splitNumbers(String line, String separator) {
+		return Arrays.asList(line.split(separator));
+	}
 
 	private void checkPositivness(List<Integer> numbers) throws NegativeNotAllowed {
 		List<Integer> negativeNumbers = new LinkedList<Integer>();
@@ -64,15 +87,6 @@ public class StringCalculator {
 		return line.substring(SEPARATOR_HEADER_PREFIX.length());
 	}
 
-	private List<Integer> getNumbersFrom(String lineNumbers, String separator) {
-		List<Integer> numbers = new LinkedList<Integer>();	
-		List<String> stringNumbers = Arrays.asList(lineNumbers.split(separator));
-
-		for(String num: stringNumbers)
-			numbers.add(stringToNumber(num));
-
-		return numbers;
-	}
 
 	private List<String> getLines(String data) {
 		return new LinkedList(Arrays.asList(data.split(NEW_LINE_SEQUENCE)));
