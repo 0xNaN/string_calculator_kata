@@ -6,6 +6,7 @@ import java.util.List;
 
 public class StringCalculator {
 
+	private static final String SEPARATOR_PATTERN = "//.*\n";
 	private static final String SEPARATOR_HEADER_PREFIX = "//";
 	private static final String NEW_LINE_SEQUENCE = "\n";
 	private static final String EMTY_LINE = "";
@@ -32,18 +33,11 @@ public class StringCalculator {
 
 		if(isSeparatorHeader(lines.get(0)))
 			lines.remove(0);
-	
-		return getNumbersFrom(lines, separator);
+		
+		return getNumbersFrom(collapseToALine(data, separator), separator);
 	}
 
-	private List<Integer> getNumbersFrom(List<String> lines, String separator) {
-		List<Integer> numbers = new LinkedList<Integer>();
-		for(String line: lines) {
-			List<Integer> lineNumbers = getNumbersFrom(line, separator);
-			numbers.addAll(lineNumbers);
-		}
-		return numbers;
-	}
+
 
 	private List<Integer> getNumbersFrom(String line, String separator) {
 		List<Integer> numbers = new LinkedList<Integer>();	
@@ -87,6 +81,11 @@ public class StringCalculator {
 		return line.substring(SEPARATOR_HEADER_PREFIX.length());
 	}
 
+	private String collapseToALine(String data, String separator) {
+		data = data.replaceFirst(SEPARATOR_PATTERN, "");
+		data = data.replace(NEW_LINE_SEQUENCE, separator);
+		return data;
+	}
 
 	private List<String> getLines(String data) {
 		return new LinkedList(Arrays.asList(data.split(NEW_LINE_SEQUENCE)));
