@@ -18,10 +18,21 @@ public class StringCalculator {
 		if(isSeparatorHeader(lines.get(0)))
 			lines.remove(0);
 		checkPositivness(lines, separator);
+		List<Integer> allNumbers = getNumbersFrom(lines, separator);
 		int total = 0;
-		for(String line: lines)
-			total += computeLine(line, separator);
+		for(Integer num: allNumbers)
+			total += num;
 		return total;
+	}
+
+
+	private List<Integer> getNumbersFrom(List<String> lines, String separator) {
+		List<Integer> numbers = new LinkedList<Integer>();
+		for(String line: lines) {
+			List<Integer> lineNumbers = getNumbersFrom(line, separator);
+			numbers.addAll(lineNumbers);
+		}
+		return numbers;
 	}
 
 
@@ -59,16 +70,6 @@ public class StringCalculator {
 
 	private String parseSeparator(String line) {
 		return line.substring(SEPARATOR_HEADER_PREFIX.length());
-	}
-
-	private int computeLine(String line, String separator) throws NegativeNotAllowed {
-		int total = 0;
-		for(Integer number: getNumbersFrom(line, separator)) {
-			if(number < 0)
-				throw new NegativeNotAllowed(number.toString());
-			total += number;
-		}
-		return total;
 	}
 
 	private List<Integer> getNumbersFrom(String lineNumbers, String separator) {
